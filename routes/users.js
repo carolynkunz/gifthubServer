@@ -79,8 +79,23 @@ router.post('/api/users', (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 });
+
+// router.get('/api/users', (req, res, next) => {
+//   knex('users')
+//     .orderBy(id)
+//     .then((rows) => {
+//       const users = camelizeKeys(rows);
+//
+//       res.send(users);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       next(err);
+//     });
+// });
 
 module.exports = router;

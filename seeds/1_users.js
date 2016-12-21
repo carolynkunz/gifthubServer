@@ -11,7 +11,7 @@ exports.seed = function(knex) {
         last_name: 'Kunz',
         email: 'carolyn.delbeccaro@gmail.com',
         username: 'cdelkunz',
-        hashed_password: '$2a$12$C9AYYmcLVGYlGoO4vSZTPud9ArJwbGRsJ6TUsNULzR48z8fOnTXbS'
+        hashed_password: '$2a$12$90rTf0MuRp0zOpfpcWnzgeF1fJ9iYpR.CveEU3hD5nWY0uDoOzoxO'
       }]);
     })
     .then(() => {
