@@ -1,0 +1,44 @@
+{
+  "name": "gifthubServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "knex": "knex"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolynkunz/gifthubServer.git"
+  },
+  "keywords": [],
+  "author": "Carolyn Kunz <carolyn.delbeccaro@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carolynkunz/gifthubServer/issues"
+  },
+  "homepage": "https://github.com/carolynkunz/gifthubServer#readme",
+  "dependencies": {
+    "bcrypt-as-promised": "^1.1.0",
+    "body-parser": "^1.15.2",
+    "boom": "^4.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-validation": "^1.0.1",
+    "humps": "^2.0.0",
+    "joi": "^10.0.6",
+    "jsonwebtoken": "^7.2.1",
+    "knex": "^0.12.6",
+    "morgan": "^1.7.0",
+    "pg": "^6.1.2"
+  },
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "eslint": "^3.12.2",
+    "eslint-config-ryansobol": "^10.0.2",
+    "foreman": "^2.0.0"
+  },
+  "engines": {
+    "node": "6.6.0"
+  }
+}
