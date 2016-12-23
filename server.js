@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const app = express();
+const ev = require('express-validation');
 
 app.disable('x-powered-by');
 
@@ -42,11 +43,11 @@ app.use((req, res, next) => {
 });
 
 const recipients = require('./routes/recipients');
-const reminders = require('./routes/reminders');
+// const reminders = require('./routes/reminders');
 const token = require('./routes/token');
 const users = require('./routes/users');
 
-// app.use(recipients);
+app.use(recipients);
 // app.use(reminders);
 app.use(token);
 app.use(users);
@@ -62,6 +63,14 @@ app.use((err, _req, res, _next) => {
       .status(err.output.statusCode)
       .set('Content-Type', 'text/plain')
       .send(err.message);
+  }
+
+  if(err.status) {
+
+    return res
+      .status(err.status)
+      .set('Content-Type', 'text/plain')
+      .send(err.errors[0].messages[0])
   }
 
   // eslint-disable-next-line no-console

@@ -84,18 +84,60 @@ router.post('/api/users', (req, res, next) => {
     });
 });
 
-// router.get('/api/users', (req, res, next) => {
-//   knex('users')
-//     .orderBy(id)
-//     .then((rows) => {
-//       const users = camelizeKeys(rows);
+router.get('/api/users', (_req, res, next) => {
+  knex('users')
+    .orderBy('id')
+    .then((rows) => {
+      const users = camelizeKeys(rows);
+
+     res.send(users);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
+
+// router.get('/api/users/:id', (req, res, next) => {
+//   const id = Number.parseInt(req.params.id);
 //
-//       res.send(users);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       next(err);
-//     });
+//   if (Number.isNaN(id)) {
+//     return next();
+//   }
+//
+//   knex('users')
+//   .where('id', req.params.id)
+//   .first()
+//   .then((row) => {
+//     if (!row) {
+//       throw boom.create(404, 'Not Found');
+//     }
+//
+//     const user = camelizeKeys(row);
+//
+//     res.send(user);
+//   })
+//   .catch((err) => {
+//     next(err);
+//   });
 // });
+
+router.get('/api/users/:username', (req, res, next) => {
+  console.log(req.params.username);
+    knex('users')
+    .where('username', req.params.username)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found');
+      }
+      const user = camelizeKeys(row);
+
+      res.send(user);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 module.exports = router;
