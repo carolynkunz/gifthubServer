@@ -13,7 +13,7 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 const router = express.Router();
 
 router.post('/api/users', (req, res, next) => {
-  let { firstName, lastName, email, password, username } = req.body;
+  let { firstName, lastName, email, username, password } = req.body;
 
   console.log(req.body);
 
