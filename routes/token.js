@@ -32,7 +32,6 @@ router.post('/api/token', (req, res, next) => {
   if (!password || password.length < 8) {
     return next(boom.create(400, 'Password must not be blank'));
   }
-
   let user;
 
   knex('users')
@@ -67,6 +66,7 @@ router.post('/api/token', (req, res, next) => {
       throw boom.create(400, 'Bad email or password');
     })
     .catch((err) => {
+      console.log(err);
       next(err);
     });
 });
