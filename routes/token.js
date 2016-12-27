@@ -63,7 +63,7 @@ router.post('/api/token', (req, res, next) => {
       res.send(user);
     })
     .catch(bcrypt.MISMATCH_ERROR, () => {
-      throw boom.create(400, 'Bad email or password');
+      throw boom.create(400, 'Bad username or password');
     })
     .catch((err) => {
       console.log(err);
