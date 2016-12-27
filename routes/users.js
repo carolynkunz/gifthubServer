@@ -22,7 +22,7 @@ router.post('/api/users', (req, res, next) => {
   }
 
   if (!lastName || !lastName.trim()) {
-    return next(boom.create(400, 'Last Name must not be blank'));
+    return next(boom.create(400, 'First Name must not be blank'));
   }
 
   if (!email || !email.trim()) {
