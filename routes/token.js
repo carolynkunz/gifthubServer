@@ -15,6 +15,7 @@ router.get('/api/token', (req, res) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, _decoded) => {
     if (err) {
+
       return res.send(false);
     }
 
@@ -26,11 +27,11 @@ router.post('/api/token', (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !username.trim()) {
-    return next(boom.create(400, 'Username must not be blank'));
+    return next(boom.create(400, 'Username is incorrect'));
   }
 
   if (!password || password.length < 8) {
-    return next(boom.create(400, 'Password must not be blank'));
+    return next(boom.create(400, 'Password is incorrect'));
   }
   let user;
 
