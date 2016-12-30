@@ -14,38 +14,60 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 
 const router = express.Router();
 
-router.get('/recipients', (_req, res, next) => {
+const authorize = function(req, res, next) {
+  const token = req.cookies.token;
+  console.log('recipient token: ', token);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return next(boom.create(401, 'Unauthorized'));
+    }
+
+    req.token = decoded;
+
+    next();
+  });
+};
+
+router.get('/api/recipients', authorize, (req, res, next) => {
+  const userId = req.token.userId;
+  console.log(userid);
+
   knex('recipients')
-    .orderBy('user_id')
-    .then((rows) => {
-      const recipient = camelizeKeys(rows);
+    .select('id')
+    // .where('id', req.params.id)
+    .where('user_id', userId)
+    .then((recipients) => {
+      const idArray = [];
 
-      res.send(recipient);
-    })
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
-});
-
-router.get('/recipients/:first_name', (req, res, next) => {
-  console.log(req.params.first_name);
-    knex('recipients')
-    .where('first_name', req.params.first_name)
-    .first()
-    .then((row) => {
-      if (!row) {
-        throw boom.create(404, 'Not Found');
+      for (const id of recipientIds) {
+        idArray.push(id);
       }
-      const recipient = camelizeKeys(row);
 
-      res.send(recipient);
+      return knex('recipients').select('first_name', 'last_name', 'id').whereIn('id', idArray);
+    })
+    .then((recipientsList) => {
+      res.send(recipientsList);
     })
     .catch((err) => {
       console.log(err);
       next(err);
     });
 });
+
+// router.get('/recipients', (_req, res, next) => {
+//   knex('recipients')
+//     .orderBy('user_id')
+//     .then((rows) => {
+//       const recipient = camelizeKeys(rows);
+//
+//       res.send(recipient);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       next(err);
+//     });
+// });
 
 router.post('/recipients', ev(validations.post), (req, res, next) => {
   const {userId, firstName, lastName, addressLineOne, addressLineTwo, addressCity, addressState, addressZip, birthday, note} = req.body;

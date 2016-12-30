@@ -65,6 +65,8 @@ app.use((err, _req, res, _next) => {
       .send(err.message);
   }
 
+  console.error(JSON.stringify(err, null, 2));
+
   if(err.status) {
 
     return res

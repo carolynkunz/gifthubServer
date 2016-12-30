@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.get('/api/token', (req, res) => {
   const token = req.cookies.token;
+  console.log('token: ', token);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, _decoded) => {
     if (err) {
