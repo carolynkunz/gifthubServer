@@ -30,8 +30,9 @@ const authorize = function(req, res, next) {
 };
 
 router.get('/api/recipients', authorize, (req, res, next) => {
+
   const userId = req.token.userId;
-  console.log(userid);
+
 
   knex('recipients')
     .select('id')
@@ -48,6 +49,26 @@ router.get('/api/recipients', authorize, (req, res, next) => {
     })
     .then((recipientsList) => {
       res.send(recipientsList);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
+
+
+router.get('/recipients/:first_name', (req, res, next) => {
+  console.log(req.params.first_name);
+    knex('recipients')
+    .where('first_name', req.params.first_name)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found');
+      }
+      const recipient = camelizeKeys(row);
+
+      res.send(recipient);
     })
     .catch((err) => {
       console.log(err);
