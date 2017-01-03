@@ -12,7 +12,6 @@ const router = express.Router();
 
 router.get('/api/token', (req, res) => {
   const token = req.cookies.token;
-  console.log('token: ', token);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, _decoded) => {
     if (err) {
@@ -56,12 +55,7 @@ router.post('/api/token', (req, res, next) => {
         expiresIn: '3h'
       });
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        expires: expiry,
-        secure: router.get('env') === 'production'
-      });
-
+      user.token = token;
       res.send(user);
     })
     .catch(bcrypt.MISMATCH_ERROR, () => {

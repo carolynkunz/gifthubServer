@@ -15,38 +15,32 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 const router = express.Router();
 
 const authorize = function(req, res, next) {
-  const token = req.cookies.token;
-  console.log('recipient token: ', token);
+  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer'))  {
+    const token = req.headers.authorization.substr(7);
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return next(boom.create(401, 'Unauthorized'));
+      }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return next(boom.create(401, 'Unauthorized'));
-    }
+      req.token = decoded;
+      next();
+    });
 
-    req.token = decoded;
+    return;
+  }
 
-    next();
-  });
+  return next(boom.create(401, 'Unauthorized'));
 };
 
 router.get('/api/recipients', authorize, (req, res, next) => {
 
   const userId = req.token.userId;
-
+  console.log(userId);
 
   knex('recipients')
-    .select('id')
+    .select('first_name', 'last_name', 'id')
     // .where('id', req.params.id)
     .where('user_id', userId)
-    .then((recipients) => {
-      const idArray = [];
-
-      for (const id of recipientIds) {
-        idArray.push(id);
-      }
-
-      return knex('recipients').select('first_name', 'last_name', 'id').whereIn('id', idArray);
-    })
     .then((recipientsList) => {
       res.send(recipientsList);
     })
@@ -57,7 +51,7 @@ router.get('/api/recipients', authorize, (req, res, next) => {
 });
 
 
-router.get('/recipients/:first_name', (req, res, next) => {
+router.get('/recipients/:first_name', authorize, (req, res, next) => {
   console.log(req.params.first_name);
     knex('recipients')
     .where('first_name', req.params.first_name)
@@ -76,19 +70,24 @@ router.get('/recipients/:first_name', (req, res, next) => {
     });
 });
 
-// router.get('/recipients', (_req, res, next) => {
-//   knex('recipients')
-//     .orderBy('user_id')
-//     .then((rows) => {
-//       const recipient = camelizeKeys(rows);
-//
-//       res.send(recipient);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       next(err);
-//     });
-// });
+router.get('/recipients/user/:user_id', (req, res, next) => {
+  console.log(req.params.user_id);
+    knex('recipients')
+    .where('user_id', req.params.user_id)
+    .orderBy('first_name')
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Not Found');
+      }
+      const recipient = camelizeKeys(row);
+
+      res.send(recipient);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
 
 router.post('/recipients', ev(validations.post), (req, res, next) => {
   const {userId, firstName, lastName, addressLineOne, addressLineTwo, addressCity, addressState, addressZip, birthday, note} = req.body;
