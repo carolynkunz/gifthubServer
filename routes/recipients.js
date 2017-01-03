@@ -69,7 +69,7 @@ router.get('/api/recipients', authorize, (req, res, next) => {
 //     });
 // });
 
-router.get('/recipients/:id', authorize, (req, res, next) => {
+router.get('/recipients/:id', (req, res, next) => {
   console.log(req.params.id);
     knex('recipients')
     .where('id', req.params.id)
