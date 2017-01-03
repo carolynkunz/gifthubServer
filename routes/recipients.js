@@ -39,7 +39,6 @@ router.get('/api/recipients', authorize, (req, res, next) => {
 
   knex('recipients')
     .select('first_name', 'last_name', 'id')
-    // .where('id', req.params.id)
     .where('user_id', userId)
     .then((recipientsList) => {
       res.send(recipientsList);
@@ -51,10 +50,29 @@ router.get('/api/recipients', authorize, (req, res, next) => {
 });
 
 
-router.get('/recipients/:first_name', authorize, (req, res, next) => {
-  console.log(req.params.first_name);
+// router.get('/recipients/:first_name', authorize, (req, res, next) => {
+//   console.log(req.params.first_name);
+//     knex('recipients')
+//     .where('first_name', req.params.first_name)
+//     .first()
+//     .then((row) => {
+//       if (!row) {
+//         throw boom.create(404, 'Not Found');
+//       }
+//       const recipient = camelizeKeys(row);
+//
+//       res.send(recipient);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       next(err);
+//     });
+// });
+
+router.get('/recipients/:id', authorize, (req, res, next) => {
+  console.log(req.params.id);
     knex('recipients')
-    .where('first_name', req.params.first_name)
+    .where('id', req.params.id)
     .first()
     .then((row) => {
       if (!row) {
