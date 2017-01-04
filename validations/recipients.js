@@ -1,6 +1,6 @@
 'use strict';
 
-const joi = require('joi');
+const joi = require('Joi');
 
 module.exports.post = {
   body: {

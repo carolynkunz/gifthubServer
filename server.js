@@ -35,7 +35,7 @@ app.use(express.static(path.join('public')));
 
 // CSRF protection
 app.use((req, res, next) => {
-  if (/json/.test(req.get('Accept' : 'application/json'))) {
+  if (/json/.test(req.get('Accept'))) {
     return next();
   }
 
@@ -66,6 +66,7 @@ app.use((err, _req, res, _next) => {
   }
 
   console.error(JSON.stringify(err, null, 2));
+
 
   if(err.status) {
 
