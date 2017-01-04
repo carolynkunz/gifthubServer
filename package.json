@@ -29,7 +29,7 @@
     "express": "^4.14.0",
     "express-validation": "^1.0.1",
     "humps": "^2.0.0",
-    "Joi": "^10.0.6",
+    "joi": "^10.0.6",
     "jsonwebtoken": "^7.2.1",
     "knex": "^0.12.6",
     "morgan": "^1.7.0",
