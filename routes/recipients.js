@@ -41,7 +41,7 @@ router.get('/api/recipients', authorize, (req, res, next) => {
     .select('first_name', 'last_name', 'id')
     .where('user_id', userId)
     .then((recipientsList) => {
-      res.send(recipientsList);
+      res.send(camelizeKeys(recipientsList));
     })
     .catch((err) => {
       console.log(err);
