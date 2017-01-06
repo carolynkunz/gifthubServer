@@ -107,8 +107,9 @@ router.get('/recipients/user/:user_id', (req, res, next) => {
     });
 });
 
-router.post('/recipients', ev(validations.post), (req, res, next) => {
-  const {userId, firstName, lastName, addressLineOne, addressLineTwo, addressCity, addressState, addressZip, birthday, note} = req.body;
+router.post('/recipients', authorize, ev(validations.post), (req, res, next) => {
+  const { userId } = req.token;
+  const {firstName, lastName, addressLineOne, addressLineTwo, addressCity, addressState, addressZip, birthday, note} = req.body;
   const insertRecipient = {userId, firstName, lastName, addressLineOne, addressLineTwo, addressCity, addressState, addressZip, birthday, note};
 
   knex('recipients')

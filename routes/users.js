@@ -70,12 +70,7 @@ router.post('/api/users', (req, res, next) => {
         expiresIn: '3h'
       });
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        expires: expiry,
-        secure: router.get('env') === 'production'
-      });
-
+      user.token = token;
       res.send(user);
     })
     .catch((err) => {
