@@ -10,7 +10,7 @@ module.exports.post = {
       .trim(),
     lastName: joi.string()
       .label('Last Name')
-      .required()
+      .optional()
       .trim(),
     addressLineOne: joi.string()
       .label('Address Line One')
